@@ -58,31 +58,31 @@ MainWindow::~MainWindow()
 void MainWindow::on_menu_button_clicked()
 {
     insession=false;
-    ui->stackedWidget_2->setCurrentIndex(0);
+    ui->screen->setCurrentIndex(0);
 }
 
 
 void MainWindow::on_up_button_clicked()
 {
-    if(ui->stackedWidget_2->currentIndex()==0){
+    if(ui->screen->currentIndex()==0){
         if(option_number==0){
             option_number=3;
         }
-        ui->stackedWidget_2->currentWidget()->findChild<QListWidget *>()->setCurrentRow(option_number-1);
+        ui->screen->currentWidget()->findChild<QListWidget *>()->setCurrentRow(option_number-1);
         option_number-=1;
     }
-    else if(ui->stackedWidget_2->currentIndex()==1){
+    else if(ui->screen->currentIndex()==1){
         if(option_number==0){
             option_number=2;
         }
-        ui->stackedWidget_2->currentWidget()->findChild<QListWidget *>()->setCurrentRow(option_number-1);
+        ui->screen->currentWidget()->findChild<QListWidget *>()->setCurrentRow(option_number-1);
         option_number-=1;
     }
-    else if(ui->stackedWidget_2->currentIndex()==3){
+    else if(ui->screen->currentIndex()==3){
         if(option_number==0){
             option_number=4;
         }
-        ui->stackedWidget_2->currentWidget()->findChild<QListWidget *>()->setCurrentRow(option_number-1);
+        ui->screen->currentWidget()->findChild<QListWidget *>()->setCurrentRow(option_number-1);
         option_number-=1;
     }
 
@@ -91,64 +91,74 @@ void MainWindow::on_up_button_clicked()
 void MainWindow::on_down_button_clicked()
 {
     option_number+=1;
-    if(ui->stackedWidget_2->currentIndex()==0){
+    if(ui->screen->currentIndex()==0){
         if(option_number==4){
             option_number=1;
         }
-        ui->stackedWidget_2->currentWidget()->findChild<QListWidget *>()->setCurrentRow(option_number-1);
+        ui->screen->currentWidget()->findChild<QListWidget *>()->setCurrentRow(option_number-1);
     }
-    else if(ui->stackedWidget_2->currentIndex()==1){
+    else if(ui->screen->currentIndex()==1){
         if(option_number==3){
             option_number=1;
         }
-        ui->stackedWidget_2->currentWidget()->findChild<QListWidget *>()->setCurrentRow(option_number-1);
+        ui->screen->currentWidget()->findChild<QListWidget *>()->setCurrentRow(option_number-1);
     }
-    else if(ui->stackedWidget_2->currentIndex()==3){
+    else if(ui->screen->currentIndex()==3){
         if(option_number==5){
             option_number=1;
         }
-        ui->stackedWidget_2->currentWidget()->findChild<QListWidget *>()->setCurrentRow(option_number-1);
+        ui->screen->currentWidget()->findChild<QListWidget *>()->setCurrentRow(option_number-1);
     }
 }
 
 void MainWindow::on_back_button_clicked()
 {
-    ui->stackedWidget_2->setCurrentIndex(previous_page);
+    ui->screen->setCurrentIndex(previous_page);
     previous_page=previous_page-1;
 }
 
 
 void MainWindow::on_ok_button_clicked()
 {
-
-    qInfo("%d",ui->listWidget->currentRow());
+    qInfo("%d",ui->menu_screen->currentRow());
     if(insession==false){
-        if(ui->stackedWidget_2->currentWidget()->findChild<QListWidget *>("listWidget")){
-            if(ui->stackedWidget_2->currentWidget()->findChild<QListWidget *>("listWidget")->currentRow()==0){
-                previous_page=ui->stackedWidget_2->currentIndex();
+
+        //ok button clicked on menu screen
+        if(ui->screen->currentWidget()->findChild<QListWidget *>("menu_screen")){
+
+            //start a session option
+            if(ui->screen->currentWidget()->findChild<QListWidget *>("menu_screen")->currentRow()==0){
+
+                previous_page=ui->screen->currentIndex();
                 insession=true;
 
                 dataTimer->start(0);
                 timer->start(1000);
-                ui->stackedWidget_2->setCurrentIndex(4);
+                ui->screen->setCurrentIndex(4);
             }
-            else if(ui->stackedWidget_2->currentWidget()->findChild<QListWidget *>("listWidget")->currentRow()==1){
-                previous_page=ui->stackedWidget_2->currentIndex();
-                ui->stackedWidget_2->setCurrentIndex(1);
+
+            //settings option
+            else if(ui->screen->currentWidget()->findChild<QListWidget *>("menu_screen")->currentRow()==1){
+                previous_page=ui->screen->currentIndex();
+                ui->screen->setCurrentIndex(1);
             }
-            else if(ui->stackedWidget_2->currentWidget()->findChild<QListWidget *>("listWidget")->currentRow()==3){
-                previous_page=ui->stackedWidget_2->currentIndex();
-                ui->stackedWidget_2->setCurrentIndex(2);
+
+            //Logs/History option
+            else if(ui->screen->currentWidget()->findChild<QListWidget *>("menu_screen")->currentRow()==3){
+                previous_page=ui->screen->currentIndex();
+                ui->screen->setCurrentIndex(2);
             }
         }
-        else if(ui->stackedWidget_2->currentWidget()->findChild<QListWidget *>("listWidget_3")){
-            if(ui->stackedWidget_2->currentWidget()->findChild<QListWidget *>("listWidget_3")->currentRow()==0){
-                previous_page=ui->stackedWidget_2->currentIndex();
-                ui->stackedWidget_2->setCurrentIndex(3);
+
+        //ok button clicked on settings screen
+        else if(ui->screen->currentWidget()->findChild<QListWidget *>("settings_screen")){
+            if(ui->screen->currentWidget()->findChild<QListWidget *>("settings_screen")->currentRow()==0){
+                previous_page=ui->screen->currentIndex();
+                ui->screen->setCurrentIndex(3);
             }
-            else if(ui->stackedWidget_2->currentWidget()->findChild<QListWidget *>("listWidget_3")->currentRow()==1){
-                previous_page=ui->stackedWidget_2->currentIndex();
-                ui->stackedWidget_2->setCurrentIndex(3);
+            else if(ui->screen->currentWidget()->findChild<QListWidget *>("settings_screen")->currentRow()==1){
+                previous_page=ui->screen->currentIndex();
+                ui->screen->setCurrentIndex(3);
             }
         }
     }
@@ -160,7 +170,7 @@ void MainWindow::on_ok_button_clicked()
         dataTimer->stop();
 
 
-        ui->stackedWidget_2->setCurrentIndex(5);
+        ui->screen->setCurrentIndex(5);
 
 
     }

@@ -14,7 +14,7 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QFrame" name="frame">
+   <widget class="QFrame" name="device">
     <property name="geometry">
      <rect>
       <x>110</x>
@@ -94,7 +94,7 @@
       <string>ok</string>
      </property>
     </widget>
-    <widget class="QFrame" name="frame_2">
+    <widget class="QFrame" name="screen_frame">
      <property name="geometry">
       <rect>
        <x>20</x>
@@ -109,7 +109,7 @@
      <property name="frameShadow">
       <enum>QFrame::Raised</enum>
      </property>
-     <widget class="QStackedWidget" name="stackedWidget_2">
+     <widget class="QStackedWidget" name="screen">
       <property name="geometry">
        <rect>
         <x>10</x>
@@ -119,10 +119,10 @@
        </rect>
       </property>
       <property name="currentIndex">
-       <number>3</number>
+       <number>0</number>
       </property>
-      <widget class="QWidget" name="page_4">
-       <widget class="QListWidget" name="listWidget">
+      <widget class="QWidget" name="menu">
+       <widget class="QListWidget" name="menu_screen">
         <property name="geometry">
          <rect>
           <x>40</x>
@@ -147,7 +147,7 @@
          </property>
         </item>
        </widget>
-       <widget class="QLabel" name="label_3">
+       <widget class="QLabel" name="menu_title">
         <property name="geometry">
          <rect>
           <x>120</x>
@@ -161,8 +161,8 @@
         </property>
        </widget>
       </widget>
-      <widget class="QWidget" name="page_5">
-       <widget class="QListWidget" name="listWidget_3">
+      <widget class="QWidget" name="settings">
+       <widget class="QListWidget" name="settings_screen">
         <property name="geometry">
          <rect>
           <x>30</x>
@@ -208,7 +208,7 @@
         </property>
        </widget>
       </widget>
-      <widget class="QWidget" name="page_6">
+      <widget class="QWidget" name="challenge_screen">
        <widget class="QListWidget" name="challenge_list">
         <property name="geometry">
          <rect>
@@ -239,7 +239,7 @@
          </property>
         </item>
        </widget>
-       <widget class="QLabel" name="label">
+       <widget class="QLabel" name="challenge_title">
         <property name="geometry">
          <rect>
           <x>80</x>
