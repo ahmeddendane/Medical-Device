@@ -11,6 +11,8 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
+    coherence_scores = {0.1, 0.3, 0.5, 0.7, 0.9, 1.0, 1.4, 1.8, 2.0, 2.5, 3.0};
+
     ui->left_button->setIcon(QIcon("/media/sf_3004/arrowleftkey.png"));
     ui->right_button->setIcon(QIcon("/media/sf_3004/arrowrightkey.png"));
 
@@ -133,7 +135,7 @@ void MainWindow::on_ok_button_clicked()
                 insession=true;
 
                 dataTimer->start(0);
-                timer->start(1000);
+                timer->start(5000);
                 ui->screen->setCurrentIndex(4);
             }
 
@@ -298,16 +300,12 @@ void MainWindow::read_Coherence(){
 void MainWindow::update(){
 
 
-    coherence = (ui->coherence_table->item(i,0)->data(1).toFloat());
+    coherence = coherence_scores[qrand() % coherence_scores.size()];
 
     ui->length_box->setText(length);
     ui->coherence_box->setText(QString::number(coherence));
     ui->achievement_box->setText(QString::number(achievement));
 
-    if(i<ui->coherence_table->rowCount()-1){
-        achievement = achievement+coherence;
-        i++;
-    }
 
 }
 
@@ -319,10 +317,10 @@ void MainWindow::update_bar(){
 }
 
 void MainWindow::light_bar(){
-    if(coherence<0.5){
+    if(coherence<=0.5){
         ui->light_box->setStyleSheet("background-color:red;");
     }
-    else if(coherence > 0.9){
+    else if(coherence>=1.4){
         ui->light_box->setStyleSheet("background-color:green;");
     }
     else{

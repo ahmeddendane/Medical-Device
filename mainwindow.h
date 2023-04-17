@@ -4,6 +4,7 @@
 #include <QMainWindow>
 
 #include <QMap>
+#include <QVector>
 
 
 QT_BEGIN_NAMESPACE
@@ -46,6 +47,8 @@ public:
 
    double getElapsedTime();
 
+
+
 private slots:
     void on_menu_button_clicked();
 
@@ -67,7 +70,10 @@ private slots:
 
     void  light_bar();
 
+
+
 private:
     Ui::MainWindow *ui;
+    QVector<double> coherence_scores;
 };
 #endif // MAINWINDOW_H
