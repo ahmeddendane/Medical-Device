@@ -44,6 +44,8 @@ public:
 
    void read_Coherence();
 
+   double getElapsedTime();
+
 private slots:
     void on_menu_button_clicked();
 

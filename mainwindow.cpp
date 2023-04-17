@@ -162,6 +162,7 @@ void MainWindow::on_ok_button_clicked()
             }
         }
     }
+    //stop session
     else{
         insession=false;
 
@@ -171,12 +172,17 @@ void MainWindow::on_ok_button_clicked()
 
 
         ui->screen->setCurrentIndex(5);
-
-
+        ui->Plot_2->xAxis->setRange(0, getElapsedTime());
+        ui->Plot_2->replot();
     }
 }
 
 void MainWindow::update_list(){
+}
+
+double MainWindow::getElapsedTime(){
+    static QTime time(QTime::currentTime());
+    return time.elapsed()/1000.0;
 }
 
 
@@ -184,17 +190,16 @@ void MainWindow::update_list(){
 
 
 void MainWindow::makePlot(){
-    static QTime time(QTime::currentTime());
     // calculate two new data points:
 
-    double key = time.elapsed()/1000.0; // time elapsed since start of demo, in seconds
+    double key = getElapsedTime(); // time elapsed since start of demo, in seconds
     static double lastPointKey = 0;
     length = QString::number(key);
-    if (key-lastPointKey > 0.1) // at most add point every 2 ms
+    if (key-lastPointKey > 0.5) // at most add point every 2 ms
     {
       // add data to lines:
 
-      current_value = qSin(key)+qrand()/(double)RAND_MAX*100;
+      current_value = qSin(key)+ (qrand()/(double)RAND_MAX*40.0 + 60.0);
 
       ui->Plot->graph(0)->addData(key, current_value);
       ui->Plot_2->graph(0)->addData(key,current_value);
@@ -252,8 +257,6 @@ void MainWindow::createGraph(){
     // make left and bottom axes transfer their ranges to right and top axes:
     connect(ui->Plot_2->xAxis, SIGNAL(rangeChanged(QCPRange)), ui->Plot_2->xAxis2, SLOT(setRange(QCPRange)));
     connect(ui->Plot_2->yAxis, SIGNAL(rangeChanged(QCPRange)), ui->Plot_2->yAxis2, SLOT(setRange(QCPRange)));
-
-
 
 
 }
