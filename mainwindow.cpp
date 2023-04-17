@@ -180,12 +180,11 @@ void MainWindow::on_ok_button_clicked()
 void MainWindow::update_list(){
 }
 
+
 double MainWindow::getElapsedTime(){
     static QTime time(QTime::currentTime());
     return time.elapsed()/1000.0;
 }
-
-
 
 
 
