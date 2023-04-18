@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include "session.h"
 
 #include <QMap>
 #include <QVector>
@@ -75,5 +76,8 @@ private slots:
 private:
     Ui::MainWindow *ui;
     QVector<double> coherence_scores;
+    std::vector<Session*> sessions;
+    Session* current_session;
+    int current_session_index;
 };
 #endif // MAINWINDOW_H

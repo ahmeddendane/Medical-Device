@@ -1,6 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-
+#include "session.h"
 
 #include <QTimer>
 #include <QListWidget>
@@ -131,6 +131,14 @@ void MainWindow::on_ok_button_clicked()
             //start a session option
             if(ui->screen->currentWidget()->findChild<QListWidget *>("menu_screen")->currentRow()==0){
 
+                //makes a session and adds it to the list of sessions
+                current_session = new Session();
+                current_session->start(QTime::currentTime());
+
+
+
+
+
                 previous_page=ui->screen->currentIndex();
                 insession=true;
 
@@ -166,6 +174,9 @@ void MainWindow::on_ok_button_clicked()
     }
     //stop session
     else{
+
+        current_session->end();
+        sessions.push_back(current_session);
         insession=false;
 
         timer->stop();
@@ -176,6 +187,7 @@ void MainWindow::on_ok_button_clicked()
         ui->screen->setCurrentIndex(5);
         ui->Plot_2->xAxis->setRange(0, getElapsedTime());
         ui->Plot_2->replot();
+
     }
 }
 
