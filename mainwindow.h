@@ -24,6 +24,7 @@ public:
 
     QTimer *timer;
     QTimer *dataTimer;
+    QTimer *barTimer;
 
     bool insession=false;;
 
@@ -47,6 +48,8 @@ public:
    void read_Coherence();
 
    double getElapsedTime();
+
+   void plotSummary(QVector<double>, QVector<double>);
 
 
 
@@ -77,7 +80,7 @@ private:
     Ui::MainWindow *ui;
     QVector<double> coherence_scores;
     std::vector<Session*> sessions;
-    Session* current_session;
+    Session *current_session;
     int current_session_index;
 };
 #endif // MAINWINDOW_H

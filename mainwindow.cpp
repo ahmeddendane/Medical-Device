@@ -11,8 +11,6 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    coherence_scores = {0.1, 0.3, 0.5, 0.7, 0.9, 1.0, 1.4, 1.8, 2.0, 2.5, 3.0};
-
     ui->left_button->setIcon(QIcon("/media/sf_3004/arrowleftkey.png"));
     ui->right_button->setIcon(QIcon("/media/sf_3004/arrowrightkey.png"));
 
@@ -27,10 +25,11 @@ MainWindow::MainWindow(QWidget *parent)
 
     ui->progressBar->setValue(100);
 
-    QTimer *bar_light_timer = new QTimer();
-    connect(bar_light_timer, SIGNAL(timeout()), this, SLOT(update_bar()));
-    connect(bar_light_timer, SIGNAL(timeout()), this, SLOT(light_bar()));
-    bar_light_timer->start(1000);
+    barTimer = new QTimer();
+
+    connect(barTimer, SIGNAL(timeout()), this, SLOT(update_bar()));
+    connect(barTimer, SIGNAL(timeout()), this, SLOT(light_bar()));
+
 
     createGraph();
 
@@ -43,18 +42,20 @@ MainWindow::MainWindow(QWidget *parent)
 
     read_Coherence();
 
-
-
-
-
-
-
     // setup a timer that repeatedly calls MainWindow::realtimeDataSlot:
 }
 
 MainWindow::~MainWindow()
 {
+    for(auto sesh : sessions){
+        delete sesh;
+    }
+    sessions.clear();
+    delete dataTimer;
+    delete timer;
+    delete barTimer;
     delete ui;
+
 }
 
 void MainWindow::on_menu_button_clicked()
@@ -131,19 +132,19 @@ void MainWindow::on_ok_button_clicked()
             //start a session option
             if(ui->screen->currentWidget()->findChild<QListWidget *>("menu_screen")->currentRow()==0){
 
-                //makes a session and adds it to the list of sessions
+                //makes a session
                 current_session = new Session();
-                current_session->start(QTime::currentTime());
-
-
-
 
 
                 previous_page=ui->screen->currentIndex();
                 insession=true;
 
+
+                barTimer->start(1000);
                 dataTimer->start(0);
                 timer->start(5000);
+
+                current_session->start(QTime::currentTime());
                 ui->screen->setCurrentIndex(4);
             }
 
@@ -175,18 +176,17 @@ void MainWindow::on_ok_button_clicked()
     //stop session
     else{
 
+        plotSummary(current_session->get_x_data(), current_session->get_y_data());
         current_session->end();
         sessions.push_back(current_session);
         insession=false;
 
         timer->stop();
-
         dataTimer->stop();
 
-
         ui->screen->setCurrentIndex(5);
-        ui->Plot_2->xAxis->setRange(0, getElapsedTime());
-        ui->Plot_2->replot();
+        //ui->Plot_2->xAxis->setRange(0, getElapsedTime());
+        //ui->Plot_2->replot();
 
     }
 }
@@ -208,14 +208,18 @@ void MainWindow::makePlot(){
     double key = getElapsedTime(); // time elapsed since start of demo, in seconds
     static double lastPointKey = 0;
     length = QString::number(key);
-    if (key-lastPointKey > 0.5) // at most add point every 2 ms
+    if (key-lastPointKey > 1) // at most add point every 2 ms
     {
       // add data to lines:
 
       current_value = qSin(key)+ (qrand()/(double)RAND_MAX*40.0 + 60.0);
 
+      //stores data points in the current session to log the graph
+      current_session->add_data_point(key, current_value);
+
+
       ui->Plot->graph(0)->addData(key, current_value);
-      ui->Plot_2->graph(0)->addData(key,current_value);
+      //ui->Plot_2->graph(0)->addData(key,current_value);
       // rescale value (vertical) axis to fit the current data:
       //ui->ui->Plot->graph(0)->rescaleValueAxis();
       //ui->ui->Plot->graph(1)->rescaleValueAxis(true);
@@ -225,7 +229,16 @@ void MainWindow::makePlot(){
     ui->Plot->xAxis->setRange(key, 8, Qt::AlignRight);
     ui->Plot->replot();
 
-    ui->Plot_2->xAxis->setRange(key, 8, Qt::AlignRight);
+    //ui->Plot_2->xAxis->setRange(key, 8, Qt::AlignRight);
+    //ui->Plot_2->replot();
+}
+
+void MainWindow::plotSummary(QVector<double> x_data, QVector<double> y_data){
+    for(int i = 0; i < x_data.size() - 1; i++){
+        ui->Plot_2->graph(0)->addData(i, y_data[i]);
+    }
+    qInfo("%f", current_session->get_duration());
+    ui->Plot_2->xAxis->setRange(0, floor(current_session->get_duration()) - 2);
     ui->Plot_2->replot();
 }
 
@@ -310,13 +323,11 @@ void MainWindow::read_Coherence(){
 
 void MainWindow::update(){
 
+    current_session->update_metrics();
 
-    coherence = coherence_scores[qrand() % coherence_scores.size()];
-
-    ui->length_box->setText(length);
-    ui->coherence_box->setText(QString::number(coherence));
-    ui->achievement_box->setText(QString::number(achievement));
-
+    ui->length_box->setText(QString::number(current_session->get_duration()));
+    ui->coherence_box->setText(QString::number(current_session->get_coherence()));
+    ui->achievement_box->setText(QString::number(current_session->get_achievement()));
 
 }
 
@@ -328,10 +339,10 @@ void MainWindow::update_bar(){
 }
 
 void MainWindow::light_bar(){
-    if(coherence<=0.5){
+    if(current_session->get_coherence() <= 0.5){
         ui->light_box->setStyleSheet("background-color:red;");
     }
-    else if(coherence>=1.4){
+    else if(current_session->get_coherence() >= 1.4){
         ui->light_box->setStyleSheet("background-color:green;");
     }
     else{
