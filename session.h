@@ -10,14 +10,15 @@ public:
     Session();
     void start(QTime);
     void end();
+    int get_ID();
     int get_duration();
     double get_coherence();
     double get_achievement();
     double get_length();
     double get_average();
-    int get_low_duration();
-    int get_med_duration();
-    int get_high_duration();
+    double get_low_duration();
+    double get_med_duration();
+    double get_high_duration();
     void save_graph();
     void update_metrics();
     void update_duration();

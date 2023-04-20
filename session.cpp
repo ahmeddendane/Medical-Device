@@ -1,5 +1,6 @@
 #include "session.h"
 #include "mainwindow.h"
+#include <cmath>
 
 
 int Session::prev_ID = 0;
@@ -15,6 +16,8 @@ Session::Session()
     high_time = 0;
     med_time = 0;
     low_time = 0;
+    x_data = {};
+    y_data = {};
 
 }
 
@@ -44,7 +47,7 @@ void Session::update_duration(){
     if(coherence_score < 0.5){
        low_time += 1;
     }
-    else if(coherence_score >= 1.4){
+    else if(coherence_score <= 1.4){
         med_time += 1;
     }
     else{
@@ -57,6 +60,13 @@ void Session::add_data_point(double x, double y)
     length += 1;    //can be multiplied by 1/(# of updates per second)
     x_data.push_back(x);
     y_data.push_back(y);
+}
+
+
+//getters
+int Session::get_ID()
+{
+    return sessionID;
 }
 
 int Session::get_duration()
@@ -76,25 +86,22 @@ double Session::get_achievement()
 
 double Session::get_average()
 {
-    return avg_coherence;
+    return round(avg_coherence * 10)/10;
 }
 
-int Session::get_low_duration()
+double Session::get_low_duration()
 {
-    qInfo() << low_time;
-    return (low_time/length) * 100;
+    return round((float(low_time)/length * 100)*10)/10;
 }
 
-int Session::get_med_duration()
+double Session::get_med_duration()
 {
-    qInfo() << med_time;
-    return (med_time/length) * 100;
+    return round((float(med_time)/length * 100)*10)/10;
 }
 
-int Session::get_high_duration()
+double Session::get_high_duration()
 {
-    qInfo() << high_time;
-    return (high_time/length) * 100;
+    return round((float(high_time)/length * 100)*10)/10;
 }
 
 QVector<double>& Session::get_x_data()

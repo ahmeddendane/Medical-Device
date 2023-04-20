@@ -3,6 +3,7 @@
 #include "session.h"
 
 #include <QTimer>
+#include <QDate>
 #include <QListWidget>
 
 MainWindow::MainWindow(QWidget *parent)
@@ -67,6 +68,7 @@ void MainWindow::on_menu_button_clicked()
 
 void MainWindow::on_up_button_clicked()
 {
+    //menu
     if(ui->screen->currentIndex()==0){
         if(option_number==0){
             option_number=3;
@@ -74,6 +76,7 @@ void MainWindow::on_up_button_clicked()
         ui->screen->currentWidget()->findChild<QListWidget *>()->setCurrentRow(option_number-1);
         option_number-=1;
     }
+    //settings
     else if(ui->screen->currentIndex()==1){
         if(option_number==0){
             option_number=2;
@@ -81,6 +84,7 @@ void MainWindow::on_up_button_clicked()
         ui->screen->currentWidget()->findChild<QListWidget *>()->setCurrentRow(option_number-1);
         option_number-=1;
     }
+    //challenge
     else if(ui->screen->currentIndex()==3){
         if(option_number==0){
             option_number=4;
@@ -94,18 +98,21 @@ void MainWindow::on_up_button_clicked()
 void MainWindow::on_down_button_clicked()
 {
     option_number+=1;
+    //menu
     if(ui->screen->currentIndex()==0){
         if(option_number==4){
             option_number=1;
         }
         ui->screen->currentWidget()->findChild<QListWidget *>()->setCurrentRow(option_number-1);
     }
+    //settings
     else if(ui->screen->currentIndex()==1){
         if(option_number==3){
             option_number=1;
         }
         ui->screen->currentWidget()->findChild<QListWidget *>()->setCurrentRow(option_number-1);
     }
+    //challenge
     else if(ui->screen->currentIndex()==3){
         if(option_number==5){
             option_number=1;
@@ -122,14 +129,21 @@ void MainWindow::on_back_button_clicked()
 
 
 void MainWindow::on_ok_button_clicked()
-{
+{   
     qInfo("%d",ui->menu_screen->currentRow());
     if(insession==false){
 
-        //ok button clicked on menu screen
-        if(ui->screen->currentWidget()->findChild<QListWidget *>("menu_screen")){
+        if(ui->screen->currentWidget()->findChild<QListWidget *>("log_list")){
+            Session *focused_session = sessions[ui->screen->currentWidget()->findChild<QListWidget *>("log_list")->currentRow()];
 
-            //start a session option
+            plotSummary(focused_session->get_x_data(), focused_session->get_y_data());
+            ui->screen->setCurrentIndex(5);
+        }
+
+        //ok button clicked on menu screen
+        else if(ui->screen->currentWidget()->findChild<QListWidget *>("menu_screen")){
+
+            //SESSION START POINT
             if(ui->screen->currentWidget()->findChild<QListWidget *>("menu_screen")->currentRow()==0){
 
                 //makes a session
@@ -155,7 +169,7 @@ void MainWindow::on_ok_button_clicked()
             }
 
             //Logs/History option
-            else if(ui->screen->currentWidget()->findChild<QListWidget *>("menu_screen")->currentRow()==3){
+            else if(ui->screen->currentWidget()->findChild<QListWidget *>("menu_screen")->currentRow()==2){
                 previous_page=ui->screen->currentIndex();
                 ui->screen->setCurrentIndex(2);
             }
@@ -173,17 +187,25 @@ void MainWindow::on_ok_button_clicked()
             }
         }
     }
-    //stop session
+    //SESSION END POINT
     else{
-
+        insession=false;
         plotSummary(current_session->get_x_data(), current_session->get_y_data());
         current_session->end();
         sessions.push_back(current_session);
-        insession=false;
 
+        //makes label for a logged session
+        QString ID_log = "SID: " + QString::number(current_session->get_ID());
+        QDate date = QDate::currentDate();
+        QString date_log = "    " + date.toString("dd/MM/yy");
+        QTime time = QTime::currentTime();
+        QString time_log = "    " + time.toString("h:mm ap");
+
+        QString log_title = ID_log + date_log + time_log;
+
+        ui->log_list->addItem(log_title);
         timer->stop();
         dataTimer->stop();
-
         ui->screen->setCurrentIndex(5);
     }
 }
@@ -208,7 +230,7 @@ void MainWindow::makePlot(){
     double key = getElapsedTime(); // time elapsed since start of demo, in seconds
     static double lastPointKey = 0;
     length = QString::number(key);
-    if (key-lastPointKey > 1) // at most add point every 2 ms
+    if (key-lastPointKey > 1) // at most add point every 1 second
     {
 
       current_session->update_duration();
@@ -217,7 +239,7 @@ void MainWindow::makePlot(){
       current_value = qSin(key)+ (qrand()/(double)RAND_MAX*40.0 + 60.0);
 
       //stores data points in the current session to log the graph
-      current_session->add_data_point(key, current_value);
+      current_session->add_data_point(current_session->get_duration(), current_value);
 
 
       ui->Plot->graph(0)->addData(key, current_value);
@@ -238,18 +260,18 @@ void MainWindow::makePlot(){
 void MainWindow::plotSummary(QVector<double> x_data, QVector<double> y_data){
 
 
+    //fills in the graph for a session to the summary screen
     ui->graph_summary->graph(0)->data()->clear();
 
     for(int i = 0; i < x_data.size(); i++){
         ui->graph_summary->graph(0)->addData(i, y_data[i]);
-    }
+    } 
 
-    qInfo() << current_session->get_duration();
-    ui->graph_summary->xAxis->setRange(0, current_session->get_duration() - 1);
+    ui->graph_summary->xAxis->setRange(0, x_data.size() - 1);
     ui->graph_summary->replot();
 
 
-
+    //fills in stats for a session to the summary screen
     QString label = "Achievement:\n";
     ui->achievement_summary->setText((label + QString::number(current_session->get_achievement())));
 
@@ -259,14 +281,14 @@ void MainWindow::plotSummary(QVector<double> x_data, QVector<double> y_data){
     label = "Average:\n";
     ui->avg_summary->setText(label + QString::number(current_session->get_average()));
 
-    label = "High%:\n";
-    ui->high_summary->setText(label + QString::number(current_session->get_high_duration()));
+    label = "High:\n";
+    ui->high_summary->setText(label + QString::number(current_session->get_high_duration()) + '%');
 
-    label = "Med%:\n";
-    ui->med_summary->setText(label + QString::number(current_session->get_med_duration()));
+    label = "Med:\n";
+    ui->med_summary->setText(label + QString::number(current_session->get_med_duration()) + '%');
 
-    label = "low%\n";
-    ui->low_summary->setText(label + QString::number(current_session->get_low_duration()));
+    label = "low\n";
+    ui->low_summary->setText(label + QString::number(current_session->get_low_duration()) + '%');
 
 }
 
