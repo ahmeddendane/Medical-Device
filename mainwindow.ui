@@ -119,7 +119,7 @@
        </rect>
       </property>
       <property name="currentIndex">
-       <number>3</number>
+       <number>5</number>
       </property>
       <widget class="QWidget" name="menu">
        <widget class="QListWidget" name="menu_screen">
@@ -372,15 +372,15 @@ p, li { white-space: pre-wrap; }
           <x>0</x>
           <y>0</y>
           <width>301</width>
-          <height>191</height>
+          <height>201</height>
          </rect>
         </property>
        </widget>
-       <widget class="QCustomPlot" name="Plot_2" native="true">
+       <widget class="QCustomPlot" name="graph_summary" native="true">
         <property name="geometry">
          <rect>
           <x>20</x>
-          <y>70</y>
+          <y>80</y>
           <width>261</width>
           <height>111</height>
          </rect>
@@ -389,52 +389,83 @@ p, li { white-space: pre-wrap; }
        <widget class="QWidget" name="gridLayoutWidget">
         <property name="geometry">
          <rect>
-          <x>29</x>
+          <x>30</x>
           <y>0</y>
           <width>241</width>
-          <height>71</height>
+          <height>81</height>
          </rect>
         </property>
         <layout class="QGridLayout" name="gridLayout">
-         <item row="0" column="0" alignment="Qt::AlignLeft">
-          <widget class="QLabel" name="label">
+         <item row="2" column="1" alignment="Qt::AlignHCenter">
+          <widget class="QLabel" name="length_summary">
            <property name="text">
-            <string>TextLabel</string>
+            <string>Length:</string>
            </property>
-          </widget>
-         </item>
-         <item row="0" column="1" alignment="Qt::AlignHCenter">
-          <widget class="QLabel" name="label_3">
-           <property name="text">
-            <string>TextLabel</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="1" alignment="Qt::AlignHCenter">
-          <widget class="QLabel" name="label_4">
-           <property name="text">
-            <string>TextLabel</string>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
            </property>
           </widget>
          </item>
          <item row="1" column="0" alignment="Qt::AlignLeft">
-          <widget class="QLabel" name="label_2">
+          <widget class="QLabel" name="low_summary">
            <property name="text">
-            <string>TextLabel</string>
+            <string>Low%:</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
            </property>
           </widget>
          </item>
-         <item row="1" column="2" alignment="Qt::AlignRight">
-          <widget class="QLabel" name="label_5">
+         <item row="2" column="0" alignment="Qt::AlignLeft">
+          <widget class="QLabel" name="avg_summary">
            <property name="text">
-            <string>TextLabel</string>
+            <string>Average:</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
            </property>
           </widget>
          </item>
-         <item row="0" column="2" alignment="Qt::AlignRight">
-          <widget class="QLabel" name="label_6">
+         <item row="1" column="2">
+          <widget class="QLabel" name="high_summary">
+           <property name="layoutDirection">
+            <enum>Qt::LeftToRight</enum>
+           </property>
            <property name="text">
-            <string>TextLabel</string>
+            <string>High%:</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="2" alignment="Qt::AlignRight">
+          <widget class="QLabel" name="achievement_summary">
+           <property name="text">
+            <string>Achievement:</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1" alignment="Qt::AlignHCenter">
+          <widget class="QLabel" name="med_summary">
+           <property name="text">
+            <string>Med%:</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QLabel" name="label">
+           <property name="text">
+            <string>Summary</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
            </property>
           </widget>
          </item>

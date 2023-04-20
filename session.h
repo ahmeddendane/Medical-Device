@@ -10,12 +10,17 @@ public:
     Session();
     void start(QTime);
     void end();
-    double get_duration();
+    int get_duration();
     double get_coherence();
     double get_achievement();
     double get_length();
+    double get_average();
+    int get_low_duration();
+    int get_med_duration();
+    int get_high_duration();
     void save_graph();
     void update_metrics();
+    void update_duration();
     void add_data_point(double x, double y);
     QVector<double>& get_x_data();
     QVector<double>& get_y_data();
@@ -31,7 +36,8 @@ private:
     int sessionID;
     double coherence_score;
     double achievment;
-    double length;
+    double avg_coherence;
+    int length;
     QTime start_time;
     QVector<double> x_data;
     QVector<double> y_data;

@@ -185,9 +185,6 @@ void MainWindow::on_ok_button_clicked()
         dataTimer->stop();
 
         ui->screen->setCurrentIndex(5);
-        //ui->Plot_2->xAxis->setRange(0, getElapsedTime());
-        //ui->Plot_2->replot();
-
     }
 }
 
@@ -203,6 +200,9 @@ double MainWindow::getElapsedTime(){
 
 
 void MainWindow::makePlot(){
+
+
+
     // calculate two new data points:
 
     double key = getElapsedTime(); // time elapsed since start of demo, in seconds
@@ -210,6 +210,8 @@ void MainWindow::makePlot(){
     length = QString::number(key);
     if (key-lastPointKey > 1) // at most add point every 2 ms
     {
+
+      current_session->update_duration();
       // add data to lines:
 
       current_value = qSin(key)+ (qrand()/(double)RAND_MAX*40.0 + 60.0);
@@ -234,12 +236,38 @@ void MainWindow::makePlot(){
 }
 
 void MainWindow::plotSummary(QVector<double> x_data, QVector<double> y_data){
-    for(int i = 0; i < x_data.size() - 1; i++){
-        ui->Plot_2->graph(0)->addData(i, y_data[i]);
+
+
+    ui->graph_summary->graph(0)->data()->clear();
+
+    for(int i = 0; i < x_data.size(); i++){
+        ui->graph_summary->graph(0)->addData(i, y_data[i]);
     }
-    qInfo("%f", current_session->get_duration());
-    ui->Plot_2->xAxis->setRange(0, floor(current_session->get_duration()) - 2);
-    ui->Plot_2->replot();
+
+    qInfo() << current_session->get_duration();
+    ui->graph_summary->xAxis->setRange(0, current_session->get_duration() - 1);
+    ui->graph_summary->replot();
+
+
+
+    QString label = "Achievement:\n";
+    ui->achievement_summary->setText((label + QString::number(current_session->get_achievement())));
+
+    label = "Length:\n";
+    ui->length_summary->setText((label + QString::number(current_session->get_duration())));
+
+    label = "Average:\n";
+    ui->avg_summary->setText(label + QString::number(current_session->get_average()));
+
+    label = "High%:\n";
+    ui->high_summary->setText(label + QString::number(current_session->get_high_duration()));
+
+    label = "Med%:\n";
+    ui->med_summary->setText(label + QString::number(current_session->get_med_duration()));
+
+    label = "low%\n";
+    ui->low_summary->setText(label + QString::number(current_session->get_low_duration()));
+
 }
 
 
@@ -267,22 +295,22 @@ void MainWindow::createGraph(){
     connect(ui->Plot->xAxis, SIGNAL(rangeChanged(QCPRange)), ui->Plot->xAxis2, SLOT(setRange(QCPRange)));
     connect(ui->Plot->yAxis, SIGNAL(rangeChanged(QCPRange)), ui->Plot->yAxis2, SLOT(setRange(QCPRange)));
 
-    ui->Plot_2->addGraph(); // blue line
-    ui->Plot_2->graph(0)->setPen(QPen(QColor(40, 110, 255)));
-    ui->Plot_2->addGraph(); // red line
-    ui->Plot_2->graph(1)->setPen(QPen(QColor(255, 110, 40)));
+    ui->graph_summary->addGraph(); // blue line
+    ui->graph_summary->graph(0)->setPen(QPen(QColor(40, 110, 255)));
+    ui->graph_summary->addGraph(); // red line
+    ui->graph_summary->graph(1)->setPen(QPen(QColor(255, 110, 40)));
 
-    ui->Plot_2->plotLayout()->insertRow(0);
-    ui->Plot_2->plotLayout()->addElement(0,0,title);
+    ui->graph_summary->plotLayout()->insertRow(0);
+    ui->graph_summary->plotLayout()->addElement(0,0,title);
 
     timeTicker->setTimeFormat("%h:%m:%s");
-    ui->Plot_2->xAxis->setTicker(timeTicker);
-    ui->Plot_2->axisRect()->setupFullAxesBox();
-    ui->Plot_2->yAxis->setRange(60, 100);
+    ui->graph_summary->xAxis->setTicker(timeTicker);
+    ui->graph_summary->axisRect()->setupFullAxesBox();
+    ui->graph_summary->yAxis->setRange(60, 100);
 
     // make left and bottom axes transfer their ranges to right and top axes:
-    connect(ui->Plot_2->xAxis, SIGNAL(rangeChanged(QCPRange)), ui->Plot_2->xAxis2, SLOT(setRange(QCPRange)));
-    connect(ui->Plot_2->yAxis, SIGNAL(rangeChanged(QCPRange)), ui->Plot_2->yAxis2, SLOT(setRange(QCPRange)));
+    connect(ui->graph_summary->xAxis, SIGNAL(rangeChanged(QCPRange)), ui->graph_summary->xAxis2, SLOT(setRange(QCPRange)));
+    connect(ui->graph_summary->yAxis, SIGNAL(rangeChanged(QCPRange)), ui->graph_summary->yAxis2, SLOT(setRange(QCPRange)));
 
 
 }
