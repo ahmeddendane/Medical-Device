@@ -48,8 +48,8 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow()
 {
-    for(auto sesh : sessions){
-        delete sesh;
+    for (int i = 0; i < sessions.size(); ++i) {
+        delete sessions.at(i);
     }
     sessions.clear();
     delete dataTimer;
@@ -127,12 +127,29 @@ void MainWindow::on_back_button_clicked()
     previous_page=previous_page-1;
 }
 
+void MainWindow::on_delete_button_clicked()
+{
+    if(ui->screen->currentWidget()->findChild<QListWidget *>("log_list")){
+        QListWidget *log_list = ui->screen->currentWidget()->findChild<QListWidget *>("log_list");
+        int selected_row = ui->screen->currentWidget()->findChild<QListWidget *>("log_list")->currentRow();
+        log_list->takeItem(selected_row);
+
+
+        delete sessions.at(selected_row);
+        sessions.remove(selected_row);
+
+        log_list->update();
+    }
+
+}
+
 
 void MainWindow::on_ok_button_clicked()
 {   
     qInfo("%d",ui->menu_screen->currentRow());
     if(insession==false){
 
+        //Select a session log to display
         if(ui->screen->currentWidget()->findChild<QListWidget *>("log_list")){
             Session *focused_session = sessions[ui->screen->currentWidget()->findChild<QListWidget *>("log_list")->currentRow()];
 
@@ -168,7 +185,7 @@ void MainWindow::on_ok_button_clicked()
                 ui->screen->setCurrentIndex(1);
             }
 
-            //Logs/History option
+            //Navigate to the saved session logs
             else if(ui->screen->currentWidget()->findChild<QListWidget *>("menu_screen")->currentRow()==2){
                 previous_page=ui->screen->currentIndex();
                 ui->screen->setCurrentIndex(2);

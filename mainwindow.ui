@@ -29,71 +29,6 @@
     <property name="frameShadow">
      <enum>QFrame::Raised</enum>
     </property>
-    <widget class="QPushButton" name="up_button">
-     <property name="geometry">
-      <rect>
-       <x>180</x>
-       <y>300</y>
-       <width>16</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>/\</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="left_button">
-     <property name="geometry">
-      <rect>
-       <x>150</x>
-       <y>340</y>
-       <width>16</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>&lt;</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="right_button">
-     <property name="geometry">
-      <rect>
-       <x>210</x>
-       <y>340</y>
-       <width>16</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>&gt;</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="down_button">
-     <property name="geometry">
-      <rect>
-       <x>180</x>
-       <y>380</y>
-       <width>16</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>\/</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="ok_button">
-     <property name="geometry">
-      <rect>
-       <x>180</x>
-       <y>340</y>
-       <width>16</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>ok</string>
-     </property>
-    </widget>
     <widget class="QFrame" name="screen_frame">
      <property name="geometry">
       <rect>
@@ -489,45 +424,6 @@ p, li { white-space: pre-wrap; }
       </widget>
      </widget>
     </widget>
-    <widget class="QPushButton" name="back_button">
-     <property name="geometry">
-      <rect>
-       <x>70</x>
-       <y>280</y>
-       <width>41</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>back</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="on_off_button">
-     <property name="geometry">
-      <rect>
-       <x>160</x>
-       <y>410</y>
-       <width>51</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>power</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="menu_button">
-     <property name="geometry">
-      <rect>
-       <x>260</x>
-       <y>280</y>
-       <width>41</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>menu</string>
-     </property>
-    </widget>
     <widget class="QTextBrowser" name="light_box">
      <property name="geometry">
       <rect>
@@ -550,6 +446,81 @@ p, li { white-space: pre-wrap; }
      <property name="value">
       <number>24</number>
      </property>
+    </widget>
+    <widget class="QWidget" name="gridLayoutWidget_2">
+     <property name="geometry">
+      <rect>
+       <x>50</x>
+       <y>280</y>
+       <width>254</width>
+       <height>151</height>
+      </rect>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_2">
+      <item row="2" column="0">
+       <widget class="QPushButton" name="left_button">
+        <property name="text">
+         <string>&lt;</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="2">
+       <widget class="QPushButton" name="right_button">
+        <property name="text">
+         <string>&gt;</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="2">
+       <widget class="QPushButton" name="delete_button">
+        <property name="text">
+         <string>Delete</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="QPushButton" name="on_off_button">
+        <property name="text">
+         <string>Power</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QPushButton" name="down_button">
+        <property name="text">
+         <string>\/</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QPushButton" name="up_button">
+        <property name="text">
+         <string>/\</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QPushButton" name="ok_button">
+        <property name="text">
+         <string>OK</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QPushButton" name="back_button">
+        <property name="text">
+         <string>back</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="2">
+       <widget class="QPushButton" name="menu_button">
+        <property name="text">
+         <string>menu</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </widget>
    </widget>
    <widget class="QTableWidget" name="coherence_table">

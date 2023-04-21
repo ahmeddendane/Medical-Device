@@ -54,6 +54,9 @@ public:
 
 
 private slots:
+
+    void on_delete_button_clicked();
+
     void on_menu_button_clicked();
 
     void update_list();
@@ -79,7 +82,7 @@ private slots:
 private:
     Ui::MainWindow *ui;
     QVector<double> coherence_scores;
-    std::vector<Session*> sessions;
+    QVector<Session*> sessions;
     Session *current_session;
     int current_session_index;
 };
