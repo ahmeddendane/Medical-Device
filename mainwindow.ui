@@ -17,10 +17,10 @@
    <widget class="QFrame" name="device">
     <property name="geometry">
      <rect>
-      <x>110</x>
-      <y>50</y>
+      <x>130</x>
+      <y>30</y>
       <width>361</width>
-      <height>451</height>
+      <height>491</height>
      </rect>
     </property>
     <property name="frameShape">
@@ -54,7 +54,7 @@
        </rect>
       </property>
       <property name="currentIndex">
-       <number>2</number>
+       <number>5</number>
       </property>
       <widget class="QWidget" name="menu">
        <widget class="QListWidget" name="menu_screen">
@@ -308,10 +308,26 @@ p, li { white-space: pre-wrap; }
         <property name="geometry">
          <rect>
           <x>20</x>
-          <y>80</y>
+          <y>100</y>
           <width>261</width>
-          <height>101</height>
+          <height>81</height>
          </rect>
+        </property>
+       </widget>
+       <widget class="QLabel" name="HRV_summary_title">
+        <property name="geometry">
+         <rect>
+          <x>120</x>
+          <y>70</y>
+          <width>54</width>
+          <height>17</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>HRV</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
         </property>
        </widget>
       </widget>
@@ -329,10 +345,10 @@ p, li { white-space: pre-wrap; }
        <widget class="QCustomPlot" name="graph_summary" native="true">
         <property name="geometry">
          <rect>
-          <x>20</x>
-          <y>80</y>
+          <x>10</x>
+          <y>110</y>
           <width>261</width>
-          <height>111</height>
+          <height>81</height>
          </rect>
         </property>
        </widget>
@@ -421,6 +437,22 @@ p, li { white-space: pre-wrap; }
          </item>
         </layout>
        </widget>
+       <widget class="QLabel" name="HRV_title">
+        <property name="geometry">
+         <rect>
+          <x>120</x>
+          <y>90</y>
+          <width>54</width>
+          <height>17</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>HRV</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
       </widget>
      </widget>
     </widget>
@@ -451,9 +483,9 @@ p, li { white-space: pre-wrap; }
      <property name="geometry">
       <rect>
        <x>50</x>
-       <y>280</y>
+       <y>270</y>
        <width>254</width>
-       <height>151</height>
+       <height>161</height>
       </rect>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
@@ -471,17 +503,17 @@ p, li { white-space: pre-wrap; }
         </property>
        </widget>
       </item>
-      <item row="4" column="2">
-       <widget class="QPushButton" name="delete_button">
+      <item row="0" column="2">
+       <widget class="QPushButton" name="menu_button">
         <property name="text">
-         <string>Delete</string>
+         <string>menu</string>
         </property>
        </widget>
       </item>
-      <item row="4" column="0">
-       <widget class="QPushButton" name="on_off_button">
+      <item row="0" column="0">
+       <widget class="QPushButton" name="back_button">
         <property name="text">
-         <string>Power</string>
+         <string>back</string>
         </property>
        </widget>
       </item>
@@ -506,17 +538,36 @@ p, li { white-space: pre-wrap; }
         </property>
        </widget>
       </item>
-      <item row="0" column="0">
-       <widget class="QPushButton" name="back_button">
+     </layout>
+    </widget>
+    <widget class="QWidget" name="horizontalLayoutWidget">
+     <property name="geometry">
+      <rect>
+       <x>50</x>
+       <y>450</y>
+       <width>254</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <item>
+       <widget class="QPushButton" name="reset_button">
         <property name="text">
-         <string>back</string>
+         <string>Reset</string>
         </property>
        </widget>
       </item>
-      <item row="0" column="2">
-       <widget class="QPushButton" name="menu_button">
+      <item>
+       <widget class="QPushButton" name="on_off_button">
         <property name="text">
-         <string>menu</string>
+         <string>Power</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="delete_button">
+        <property name="text">
+         <string>Delete</string>
         </property>
        </widget>
       </item>

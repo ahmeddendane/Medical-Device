@@ -55,6 +55,8 @@ public:
 
 private slots:
 
+    void on_reset_button_clicked();
+
     void on_delete_button_clicked();
 
     void on_menu_button_clicked();

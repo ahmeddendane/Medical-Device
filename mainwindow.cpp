@@ -11,6 +11,10 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    createGraph();
+
+    ui->Plot->xAxis->setTickLabels(false);
+    ui->graph_summary->xAxis->setTickLabels(false);
 
     ui->left_button->setIcon(QIcon("/media/sf_3004/arrowleftkey.png"));
     ui->right_button->setIcon(QIcon("/media/sf_3004/arrowrightkey.png"));
@@ -32,7 +36,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(barTimer, SIGNAL(timeout()), this, SLOT(light_bar()));
 
 
-    createGraph();
+
 
     dataTimer = new QTimer();
     connect(dataTimer, SIGNAL(timeout()), this, SLOT(makePlot()));
@@ -131,7 +135,7 @@ void MainWindow::on_delete_button_clicked()
 {
     if(ui->screen->currentWidget()->findChild<QListWidget *>("log_list")){
         QListWidget *log_list = ui->screen->currentWidget()->findChild<QListWidget *>("log_list");
-        int selected_row = ui->screen->currentWidget()->findChild<QListWidget *>("log_list")->currentRow();
+        int selected_row = log_list->currentRow();
         log_list->takeItem(selected_row);
 
 
@@ -141,6 +145,25 @@ void MainWindow::on_delete_button_clicked()
         log_list->update();
     }
 
+}
+
+void MainWindow::on_reset_button_clicked(){
+
+    ui->screen->setCurrentIndex(0);
+    for (int i = 0; i < sessions.size(); ++i) {
+        delete sessions.at(i);
+    }
+    sessions.clear();
+    ui->screen->widget(2)->findChild<QListWidget *>("log_list")->clear();
+    ui->Plot->graph(0)->setData(QVector<double>(), QVector<double>());
+
+    barTimer->stop();
+    dataTimer->stop();
+    timer->stop();
+
+    ui->length_box->setText("0");
+    ui->coherence_box->setText("0");
+    ui->achievement_box->setText("0");
 }
 
 
@@ -207,6 +230,7 @@ void MainWindow::on_ok_button_clicked()
     //SESSION END POINT
     else{
         insession=false;
+        ui->Plot->graph(0)->setData(QVector<double>(), QVector<double>());
         plotSummary(current_session->get_x_data(), current_session->get_y_data());
         current_session->end();
         sessions.push_back(current_session);
@@ -320,9 +344,9 @@ void MainWindow::createGraph(){
     ui->Plot->addGraph(); // red line
     ui->Plot->graph(1)->setPen(QPen(QColor(255, 110, 40)));
 
-    QCPTextElement *title = new QCPTextElement(ui->Plot,"HRV");
+    //QCPTextElement *title = new QCPTextElement(ui->Plot,"HRV");
     ui->Plot->plotLayout()->insertRow(0);
-    ui->Plot->plotLayout()->addElement(0,0,title);
+    //ui->Plot->plotLayout()->addElement(0,0,title);
 
     QSharedPointer<QCPAxisTickerTime> timeTicker(new QCPAxisTickerTime);
     timeTicker->setTimeFormat("%h:%m:%s");
@@ -340,7 +364,7 @@ void MainWindow::createGraph(){
     ui->graph_summary->graph(1)->setPen(QPen(QColor(255, 110, 40)));
 
     ui->graph_summary->plotLayout()->insertRow(0);
-    ui->graph_summary->plotLayout()->addElement(0,0,title);
+    //ui->graph_summary->plotLayout()->addElement(0,0,title);
 
     timeTicker->setTimeFormat("%h:%m:%s");
     ui->graph_summary->xAxis->setTicker(timeTicker);
