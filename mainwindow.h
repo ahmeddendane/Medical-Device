@@ -25,8 +25,12 @@ public:
     QTimer *timer;
     QTimer *dataTimer;
     QTimer *barTimer;
+    QTimer *batterytimer;
+    QTimer *hrTimer;
 
     bool insession=false;;
+
+    bool hr_contact = true;
 
     float coherence;
     QString length;
@@ -36,6 +40,7 @@ public:
 
     int option_number=0;
     float current_value;
+    QString power_state = "off";
 
     QMap <float, float> numbers;
 
@@ -67,6 +72,8 @@ private slots:
 
     void update_bar();
 
+    void update_hr();
+
     void on_up_button_clicked();
 
     void on_back_button_clicked();
@@ -80,6 +87,16 @@ private slots:
     void  light_bar();
 
 
+
+    void on_off_button_clicked();
+
+    void on_on_button_clicked();
+
+    void on_charge_button_clicked();
+
+    void on_disconnect_hr_clicked();
+
+    void on_reconnect_hr_clicked();
 
 private:
     Ui::MainWindow *ui;
