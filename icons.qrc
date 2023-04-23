@@ -1,0 +1,13 @@
+<RCC>
+    <qresource prefix="/new/icons">
+        <file>icons/arrowdownkey.png</file>
+        <file>icons/arrowleftkey.png</file>
+        <file>icons/arrowrightkey.png</file>
+        <file>icons/arrowupkey.png</file>
+        <file>icons/back-button.png</file>
+        <file>icons/heart.png</file>
+        <file>icons/menubutton.png</file>
+        <file>icons/no_contact.png</file>
+        <file>icons/powerbutton.png</file>
+    </qresource>
+</RCC>

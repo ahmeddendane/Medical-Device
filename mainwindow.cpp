@@ -16,24 +16,47 @@ MainWindow::MainWindow(QWidget *parent)
     ui->Plot->xAxis->setTickLabels(false);
     ui->graph_summary->xAxis->setTickLabels(false);
 
-    ui->left_button->setIcon(QIcon("/media/sf_3004/arrowleftkey.png"));
-    ui->right_button->setIcon(QIcon("/media/sf_3004/arrowrightkey.png"));
+    ui->left_button->setIcon(QIcon(":/new/icons/icons/arrowleftkey.png"));
+    ui->right_button->setIcon(QIcon(":/new/icons/icons/arrowrightkey.png"));
 
-    ui->up_button->setIcon(QIcon("/media/sf_3004/arrowupkey.png"));
-    ui->down_button->setIcon(QIcon("/media/sf_3004/arrowdownkey.png"));
+    ui->up_button->setIcon(QIcon(":/new/icons/icons/arrowupkey.png"));
+    ui->down_button->setIcon(QIcon(":/new/icons/icons/arrowdownkey.png"));
 
-    ui->on_off_button->setIcon(QIcon("/media/sf_3004/powerbutton.png"));
-    ui->menu_button->setIcon(QIcon("/media/sf_3004/menubutton.png"));
+    ui->off_button->setIcon(QIcon(":/new/icons/icons/powerbutton.png"));
+    ui->menu_button->setIcon(QIcon(":/new/icons/icons/menubutton.png"));
 
-    ui->back_button->setIcon(QIcon("/media/sf_3004/back-button.png"));
+    ui->back_button->setIcon(QIcon(":/new/icons/icons/back-button.png"));
+
+    ui->left_button_3->setIcon(QIcon(":/new/icons/icons/arrowleftkey.png"));
+    ui->right_button_3->setIcon(QIcon(":/new/icons/icons/arrowrightkey.png"));
+
+    ui->up_button_3->setIcon(QIcon(":/new/icons/icons/arrowupkey.png"));
+    ui->down_button_3->setIcon(QIcon(":/new/icons/icons/arrowdownkey.png"));
+
+    ui->on_button->setIcon(QIcon(":/new/icons/icons/powerbutton.png"));
+    ui->menu_button_3->setIcon(QIcon(":/new/icons/icons/menubutton.png"));
+
+    ui->back_button_3->setIcon(QIcon(":/new/icons/icons/back-button.png"));
+
+    ui->hr_contact->setStyleSheet("border-image: url(:/new/icons/icons/heart.png);");
+    ui->hr_contact_3->setStyleSheet("border-image: url(:/new/icons/icons/heart.png);");
 
 
     ui->progressBar->setValue(100);
+    ui->progressBar_3->setValue(100);
 
     barTimer = new QTimer();
+    batterytimer = new QTimer();
+    hrTimer = new QTimer();
 
-    connect(barTimer, SIGNAL(timeout()), this, SLOT(update_bar()));
     connect(barTimer, SIGNAL(timeout()), this, SLOT(light_bar()));
+
+    connect(batterytimer, SIGNAL(timeout()), this, SLOT(update_bar()));
+
+    connect(hrTimer, SIGNAL(timeout()), this, SLOT(update_hr()));
+
+    batterytimer->start(1000);
+    hrTimer->start(5000);
 
 
 
@@ -416,6 +439,7 @@ void MainWindow::update(){
 
     current_session->update_metrics();
 
+
     ui->length_box->setText(QString::number(current_session->get_duration()));
     ui->coherence_box->setText(QString::number(current_session->get_coherence()));
     ui->achievement_box->setText(QString::number(current_session->get_achievement()));
@@ -425,8 +449,20 @@ void MainWindow::update(){
 
 
 void MainWindow::update_bar(){
-    ui->progressBar->setValue(ui->progressBar->value()-1);
-    ui->progressBar->update();
+    if(ui->progressBar->value()==0){
+
+        ui->power_stacked_widget->setCurrentIndex(1);
+        ui->off_state_screen->setCurrentIndex(0);
+        batterytimer->stop();
+        power_state="off";
+
+    }
+    else{
+        ui->progressBar->setValue(ui->progressBar->value()-1);
+        ui->progressBar->update();
+        ui->progressBar_3->setValue(ui->progressBar->value());
+        ui->progressBar_3->update();
+    }
 }
 
 void MainWindow::light_bar(){
@@ -440,4 +476,50 @@ void MainWindow::light_bar(){
         ui->light_box->setStyleSheet("background-color:blue;");
     }
 
+}
+
+
+void MainWindow::on_on_button_clicked()
+{
+    ui->power_stacked_widget->setCurrentIndex(0);
+    batterytimer->start(1000);
+    power_state="on";
+}
+
+void MainWindow::on_off_button_clicked()
+{
+    ui->power_stacked_widget->setCurrentIndex(1);
+    batterytimer->stop();
+    power_state="off";
+}
+
+void MainWindow::on_charge_button_clicked()
+{
+    ui->progressBar->setValue(100);
+    ui->progressBar_3->setValue(100);
+}
+
+void MainWindow::on_disconnect_hr_clicked()
+{
+    hr_contact=false;
+    ui->hr_contact->setStyleSheet("border-image: url(:/new/icons/icons/no_contact.png);");
+    ui->hr_contact_3->setStyleSheet("border-image: url(:/new/icons/icons/no_contact.png);");
+}
+
+void MainWindow::on_reconnect_hr_clicked()
+{
+    hr_contact=true;
+    ui->hr_contact->setStyleSheet("border-image: url(:/new/icons/icons/heart.png);");
+    ui->hr_contact_3->setStyleSheet("border-image: url(:/new/icons/icons/heart.png);");
+    ui->off_state_screen->setCurrentIndex(1);
+}
+
+void MainWindow::update_hr(){
+    if(hr_contact==false){
+        ui->power_stacked_widget->setCurrentIndex(1);
+        ui->off_state_screen->setCurrentIndex(2);
+
+    }
+    else{
+    }
 }
